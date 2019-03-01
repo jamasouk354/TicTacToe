@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,17 +10,19 @@ using System.Windows.Forms;
 
 namespace TicTacToe
 {
-    public partial class Form1 : Form
+    public partial class MainScreen : UserControl
     {
-        public Form1()
+        public MainScreen()
         {
             InitializeComponent();
+        }
 
-            MainScreen ms = new MainScreen();
-            this.Controls.Add(ms);
-
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            GameScreen gs = new GameScreen();
             Form f = this.FindForm();
+            f.Controls.Add(gs);
             f.Controls.Remove(this);
-        }           
+        }
     }
 }
