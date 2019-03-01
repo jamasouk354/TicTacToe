@@ -13,6 +13,7 @@ namespace TicTacToe
     public partial class GameScreen : UserControl
     {
         Pen line = new Pen(Color.Black, 8);
+        SolidBrush squareBrush = new SolidBrush(Color.DarkKhaki);
         Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown;
 
         List<Squares> sqList = new List<Squares>();
@@ -83,7 +84,7 @@ namespace TicTacToe
             //XandO Squares
             foreach (Squares sq in sqList)
             {
-                e.Graphics.DrawRectangle(line, sq.x, sq.y, sq.size, sq.size);
+                e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size);
             }
             this.Refresh();
         }
@@ -93,6 +94,10 @@ namespace TicTacToe
             sqList.Add(new Squares(33, 33, 120));
             sqList.Add(new Squares((this.Width / 3) + 22, 33, 120));
             sqList.Add(new Squares((this.Width / 3) * 2 + 14, 33, 120));
+            sqList.Add(new Squares(33, (this.Height / 2) - 60, 120));
+            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 2) - 60, 120));
+            sqList.Add(new Squares((this.Width / 3) * 2 + 14, (this.Height / 2) - 60, 120));
+
         }
     }
 }
