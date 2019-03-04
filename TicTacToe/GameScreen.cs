@@ -14,7 +14,7 @@ namespace TicTacToe
     {
         Pen line = new Pen(Color.Black, 8);
         SolidBrush squareBrush = new SolidBrush(Color.DarkKhaki);
-        Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown; 
+        Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown, bDown; 
         int current = 0;
 
         List<Squares> sqList = new List<Squares>();
@@ -45,6 +45,9 @@ namespace TicTacToe
                 case Keys.Space:
                     spaceDown = true;
                     break;
+                case Keys.B:
+                    bDown = true;
+                    break;
             }
         }
 
@@ -67,6 +70,9 @@ namespace TicTacToe
                 case Keys.Space:
                     spaceDown = false;
                     break;
+                case Keys.B:
+                    bDown = false;
+                    break;
             }
         }
         #endregion
@@ -76,6 +82,7 @@ namespace TicTacToe
             for (int i = 0; i < sqList.Count; i++)
             if (upArrowDown == true)
             {
+                current++;
                 upArrowDown = false;
             }
             if (leftArrowDown == true)
@@ -91,14 +98,10 @@ namespace TicTacToe
                 rightArrowDown = false;
             }
 
-            if (spaceDown == true)
+            foreach (Squares sq in sqList)
             {
-
-            }
-
-            for (int i = 0; i < sqList.Count; i++)
-            {
-                
+                if (spaceDown == true) { sq.contents = "x";  spaceDown = false; }
+                if (bDown == true) { sq.contents = "o"; bDown = false; }
             }
         }
 
@@ -112,13 +115,17 @@ namespace TicTacToe
             e.Graphics.DrawLine(line, 40, (this.Height / 3) * 2 - 4, this.Width - 40, (this.Height / 3) * 2 - 4);
 
             //XandO Squares
-            foreach (Square sq in sqList)
+            foreach (Squares sq in sqList)
             {
-                e.Graphics.FillRectangle(squareBrush, sqList[i].x, sqList[i].y, sqList[i].size, sqList[i].size);
-                if ( sqList[i].contents == "x")
+                e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size);
+                if ( sq.contents == "x")
                 {
-                    e.Graphics.DrawLine(cBrush, sqList[i].x, sqList[i].y, sqList[i].x + sqList[i].size, sqList[i].y + sqList[i].size);
-                    e.Graphics.DrawLine(cBrush, sqList[i].x + sqList[i].size, sqList[i].y + sqList[i].size, sqList[i].x, sqList[i].y);
+                    e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
+                    e.Graphics.DrawLine(cBrush, sq.x + sq.size - 5, sq.y + sq.size - 5, sq.x + 5, sq.y + 5);
+                }
+                if (sq.contents == "o")
+                {
+                    e.Graphics.DrawEllipse(cBrush, sq.x, sq.y, sq.size, sq.size);
                 }
             }
             Refresh();
