@@ -112,12 +112,13 @@ namespace TicTacToe
             e.Graphics.DrawLine(line, 40, (this.Height / 3) * 2 - 4, this.Width - 40, (this.Height / 3) * 2 - 4);
 
             //XandO Squares
-            for (int i = 0; i < sqList.Count; i++)
+            foreach (Square sq in sqList)
             {
                 e.Graphics.FillRectangle(squareBrush, sqList[i].x, sqList[i].y, sqList[i].size, sqList[i].size);
                 if ( sqList[i].contents == "x")
                 {
                     e.Graphics.DrawLine(cBrush, sqList[i].x, sqList[i].y, sqList[i].x + sqList[i].size, sqList[i].y + sqList[i].size);
+                    e.Graphics.DrawLine(cBrush, sqList[i].x + sqList[i].size, sqList[i].y + sqList[i].size, sqList[i].x, sqList[i].y);
                 }
             }
             Refresh();
