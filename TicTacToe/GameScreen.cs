@@ -77,16 +77,9 @@ namespace TicTacToe
             e.Graphics.DrawLine(line, 40, (this.Height / 3) + 4, this.Width - 40, (this.Height / 3) + 4);
             e.Graphics.DrawLine(line, 40, (this.Height / 3)*2 - 4, this.Width - 40, (this.Height / 3)*2 - 4);
 
-            //e.Graphics.DrawRectangle(line, 33, 33, 120, 120);
-            //e.Graphics.DrawRectangle(line, );
-            //e.Graphics.DrawRectangle(line, , 120);
-
             //XandO Squares
-            foreach (Squares sq in sqList)
-            {
-                e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size);
-            }
-            this.Refresh();
+            foreach (Squares sq in sqList) { e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size); }
+            Refresh();
         }
 
         public void Square()
@@ -97,7 +90,9 @@ namespace TicTacToe
             sqList.Add(new Squares(33, (this.Height / 2) - 60, 120));
             sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 2) - 60, 120));
             sqList.Add(new Squares((this.Width / 3) * 2 + 14, (this.Height / 2) - 60, 120));
-
+            sqList.Add(new Squares(33, (this.Height / 3) * 2 + 14, 120));
+            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120));
+            sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120));
         }
     }
 }
