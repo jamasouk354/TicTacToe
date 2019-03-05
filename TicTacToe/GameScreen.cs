@@ -14,7 +14,8 @@ namespace TicTacToe
     {
         Pen line = new Pen(Color.Black, 8);
         SolidBrush squareBrush = new SolidBrush(Color.DarkKhaki);
-        Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown, bDown; 
+        Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown, bDown;
+        string scenarios;
         int current = 0;
 
         List<Squares> sqList = new List<Squares>();
@@ -24,31 +25,44 @@ namespace TicTacToe
             InitializeComponent();
             Square();
         }
-       
+
         #region Game Controls
+        private void label1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            foreach (Squares sq in sqList)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                        upArrowDown = true;
+                        break;
+                    case Keys.Down:
+                        downArrowDown = true;
+                        break;
+                    case Keys.Left:
+                        leftArrowDown = true;
+                        break;
+                    case Keys.Right:
+                        rightArrowDown = true;
+                        break;
+                    case Keys.Space:
+                        spaceDown = true;
+                        
+                        break;
+                    case Keys.B:
+                        bDown = true;
+                        break;
+                }
+            }               
+        }
+
         private void GameScreenKeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (e.KeyCode == Keys.Escape && gameTimer.Enabled)
             {
-                case Keys.Up:
-                    upArrowDown = true;
-                    break;
-                case Keys.Down:
-                    downArrowDown = true;
-                    break;
-                case Keys.Left:
-                    leftArrowDown = true;
-                    break;
-                case Keys.Right:
-                    rightArrowDown = true;
-                    break;
-                case Keys.Space:
-                    spaceDown = true;
-                    break;
-                case Keys.B:
-                    bDown = true;
-                    break;
-            }
+                gameTimer.Enabled = false;
+                upArrowDown = downArrowDown = leftArrowDown = rightArrowDown = spaceDown = bDown = false;
+            }            
         }
 
         private void GameScreenKeyUp(object sender, KeyEventArgs e)
@@ -74,40 +88,13 @@ namespace TicTacToe
                     bDown = false;
                     break;
             }
+
         }
         #endregion
 
-        private void gameTimer_Tick(object sender, EventArgs e)
-        {
-            for (int i = 0; i < sqList.Count; i++)
-            if (upArrowDown == true)
-            {
-                current++;
-                upArrowDown = false;
-            }
-            if (leftArrowDown == true)
-            {
-                leftArrowDown = false;
-            }
-            if (downArrowDown == true)
-            {
-                downArrowDown = false;
-            }
-            if (rightArrowDown == true)
-            {
-                rightArrowDown = false;
-            }
-
-            foreach (Squares sq in sqList)
-            {
-                if (spaceDown == true) { sq.contents = "x";  spaceDown = false; }
-                if (bDown == true) { sq.contents = "o"; bDown = false; }
-            }
-        }
-
         private void PaintGame(object sender, PaintEventArgs e)
         {
-            Pen cBrush = new Pen(Color.Black, 4);
+            Pen cBrush = new Pen(Color.Black, 6);
             //Lines
             e.Graphics.DrawLine(line, (this.Width / 3) + 4, 40, (this.Width / 3) + 4, this.Height - 40);
             e.Graphics.DrawLine(line, (this.Width / 3) * 2 - 4, 40, (this.Width / 3) * 2 - 4, this.Height - 40); 
@@ -118,17 +105,21 @@ namespace TicTacToe
             foreach (Squares sq in sqList)
             {
                 e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size);
-                if ( sq.contents == "x")
+                if ( sq.contents == "x" ) 
                 {
                     e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
-                    e.Graphics.DrawLine(cBrush, sq.x + sq.size - 5, sq.y + sq.size - 5, sq.x + 5, sq.y + 5);
+                    e.Graphics.DrawLine(cBrush, sq.x + sq.size - 5, sq.y + 5, sq.x + 5, sq.y + sq.size - 5);
                 }
-                if (sq.contents == "o")
+                else if ( sq.contents == "o" )
                 {
-                    e.Graphics.DrawEllipse(cBrush, sq.x, sq.y, sq.size, sq.size);
+                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.size - 10, sq.size - 10);
+                }
+                else if ( sq.contents == "empty" )
+                {
+                    
                 }
             }
-            Refresh();
+      
         }
 
         /// <summary>
@@ -137,17 +128,17 @@ namespace TicTacToe
         public void Square()
         {
             //Top Row
-            sqList.Add(new Squares(33, 33, 120));
-            sqList.Add(new Squares((this.Width / 3) + 22, 33, 120));
-            sqList.Add(new Squares((this.Width / 3) * 2 + 14, 33, 120));
+            sqList.Add(new Squares(33, 33, 120, "empty"));
+            sqList.Add(new Squares((this.Width / 3) + 22, 33, 120, "empty"));
+            sqList.Add(new Squares((this.Width / 3) * 2 + 14, 33, 120, "empty"));
             //Mid Row
-            sqList.Add(new Squares(33, (this.Height / 2) - 60, 120));
-            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 2) - 60, 120));
-            sqList.Add(new Squares((this.Width / 3) * 2 + 14, (this.Height / 2) - 60, 120));
+            sqList.Add(new Squares(33, (this.Height / 2) - 60, 120, "empty"));
+            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 2) - 60, 120, "empty"));
+            sqList.Add(new Squares((this.Width / 3) * 2 + 14, (this.Height / 2) - 60, 120, "empty"));
             //Bot Row
-            sqList.Add(new Squares(33, (this.Height / 3) * 2 + 14, 120));
-            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120));
-            sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120));
+            sqList.Add(new Squares(33, (this.Height / 3) * 2 + 14, 120, "empty"));
+            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120, "empty"));
+            sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120, "empty"));
         }
     }
 }

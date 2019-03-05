@@ -9,15 +9,14 @@ namespace TicTacToe
     class Squares
     {
         public int x, y, size;
-        public string contents = "empty";
+        public string contents;
 
-        public Squares(int _x, int _y, int _size)
+        public Squares(int _x, int _y, int _size, string _contents)
         {
             x = _x;
             y = _y;
             size = _size;
-
-            contents = "empty";
+            contents = _contents;
         }
     }
 }

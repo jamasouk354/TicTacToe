@@ -23,6 +23,7 @@ namespace TicTacToe
             Form f = this.FindForm();
             f.Controls.Add(gs);
             f.Controls.Remove(this);
+            this.Dispose();
         }
     }
 }
