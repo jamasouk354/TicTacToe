@@ -15,7 +15,6 @@ namespace TicTacToe
         Pen line = new Pen(Color.Black, 8);
         SolidBrush squareBrush = new SolidBrush(Color.DarkKhaki);
         Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown, bDown;
-        string scenarios;
         int current = 0;
 
         List<Squares> sqList = new List<Squares>();
@@ -47,12 +46,16 @@ namespace TicTacToe
                         break;
                     case Keys.Space:
                         spaceDown = true;
-                        
+                        sq.contents = "x";
                         break;
                     case Keys.B:
                         bDown = true;
+                        sq.contents = "o";
                         break;
                 }
+                //TODO Keys to select different Squares
+                //TODO Add in seperate cases for X and O
+                //TODO Check the X and O and if they won or not
             }               
         }
 
@@ -114,12 +117,7 @@ namespace TicTacToe
                 {
                     e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.size - 10, sq.size - 10);
                 }
-                else if ( sq.contents == "empty" )
-                {
-                    
-                }
-            }
-      
+            } 
         }
 
         /// <summary>
