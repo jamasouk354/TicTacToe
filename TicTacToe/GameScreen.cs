@@ -18,12 +18,17 @@ namespace TicTacToe
         int current = 0;
 
         List<Squares> sqList = new List<Squares>();
+        List<Points> sqPoints = new List<Points>();
+        List<string> XandO = new List<string>();
+
 
         public GameScreen()
         {
             InitializeComponent();
             Square();
         }
+
+        
 
         #region Game Controls
         private void label1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -46,16 +51,11 @@ namespace TicTacToe
                         break;
                     case Keys.Space:
                         spaceDown = true;
-                        sq.contents = "x";
                         break;
                     case Keys.B:
                         bDown = true;
-                        sq.contents = "o";
                         break;
-                }
-                //TODO Keys to select different Squares
-                //TODO Add in seperate cases for X and O
-                //TODO Check the X and O and if they won or not
+                }                                
             }               
         }
 
@@ -70,31 +70,47 @@ namespace TicTacToe
 
         private void GameScreenKeyUp(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            foreach (Squares sq in sqList)
             {
-                case Keys.Up:
-                    upArrowDown = false;
-                    break;
-                case Keys.Down:
-                    downArrowDown = false;
-                    break;
-                case Keys.Left:
-                    leftArrowDown = false;
-                    break;
-                case Keys.Right:
-                    rightArrowDown = false;
-                    break;
-                case Keys.Space:
-                    spaceDown = false;
-                    break;
-                case Keys.B:
-                    bDown = false;
-                    break;
-            }
-
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                        upArrowDown = false;
+                        break;
+                    case Keys.Down:
+                        downArrowDown = false;
+                        break;
+                    case Keys.Left:
+                        leftArrowDown = false;
+                        break;
+                    case Keys.Right:
+                        rightArrowDown = false;
+                        break;
+                    case Keys.Space:
+                        spaceDown = false;
+                        break;
+                    case Keys.B:
+                        bDown = false;
+                        break;
+                }
+            }           
         }
         #endregion
+        private void gameTimer_Tick(object sender, EventArgs e)
+        {
+            if (spaceDown == true)
+            {
+                sqList[4].contents = "X";
+                spaceDown = false;
+            }
+            if (bDown == true)
+            {
+                sqList[4].contents = "O";
+                bDown = false;
+            }
 
+            Refresh();
+        }
         private void PaintGame(object sender, PaintEventArgs e)
         {
             Pen cBrush = new Pen(Color.Black, 6);
@@ -108,16 +124,36 @@ namespace TicTacToe
             foreach (Squares sq in sqList)
             {
                 e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size);
-                if ( sq.contents == "x" ) 
+
+               
+                //foreach (string xo in XandO)
+                //{
+                //    if (xo == "x")
+                //    {
+                //        label1.Text = "x";
+                //        e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
+                //        e.Graphics.DrawLine(cBrush, sq.x + sq.size - 5, sq.y + 5, sq.x + 5, sq.y + sq.size - 5);
+                //    }
+                //    else if (xo == "o")
+                //    {
+                //        label1.Text = "o";
+                //        e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.size - 10, sq.size - 10);
+                //    }
+                //}
+                //e.Graphics.DrawRectangle(cBrush, )
+            }
+            foreach (Squares sq in sqList)
+            {
+                if (sq.contents == "X")
                 {
                     e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
                     e.Graphics.DrawLine(cBrush, sq.x + sq.size - 5, sq.y + 5, sq.x + 5, sq.y + sq.size - 5);
                 }
-                else if ( sq.contents == "o" )
+                else if (sq.contents == "O")
                 {
-                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.size - 10, sq.size - 10);
+                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
                 }
-            } 
+            }
         }
 
         /// <summary>
@@ -137,6 +173,8 @@ namespace TicTacToe
             sqList.Add(new Squares(33, (this.Height / 3) * 2 + 14, 120, "empty"));
             sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120, "empty"));
             sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120, "empty"));
+
+            //Point point1 = new Point(33, this.Height / 3) * 2 + 14);
         }
     }
 }

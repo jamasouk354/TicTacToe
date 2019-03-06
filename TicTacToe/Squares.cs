@@ -11,6 +11,7 @@ namespace TicTacToe
         public int x, y, size;
         public string contents;
 
+
         public Squares(int _x, int _y, int _size, string _contents)
         {
             x = _x;
