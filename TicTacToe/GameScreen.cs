@@ -17,8 +17,8 @@ namespace TicTacToe
         Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown, bDown;
         int current = 0;
 
+
         List<Squares> sqList = new List<Squares>();
-        List<Points> sqPoints = new List<Points>();
         List<string> XandO = new List<string>();
 
 
@@ -98,6 +98,19 @@ namespace TicTacToe
         #endregion
         private void gameTimer_Tick(object sender, EventArgs e)
         {
+            if (upArrowDown == true)
+            {
+                current++;
+                upArrowDown = false;
+            }
+            if (downArrowDown == true)
+            {
+                current--;
+                downArrowDown = false;
+            }
+            if (current == 10) { current = 0; }
+            if (current == -1) { current = 10; }
+
             if (spaceDown == true)
             {
                 sqList[4].contents = "X";
@@ -108,11 +121,10 @@ namespace TicTacToe
                 sqList[4].contents = "O";
                 bDown = false;
             }
-
             Refresh();
         }
         private void PaintGame(object sender, PaintEventArgs e)
-        {
+        {             
             Pen cBrush = new Pen(Color.Black, 6);
             //Lines
             e.Graphics.DrawLine(line, (this.Width / 3) + 4, 40, (this.Width / 3) + 4, this.Height - 40);
@@ -124,23 +136,11 @@ namespace TicTacToe
             foreach (Squares sq in sqList)
             {
                 e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size);
-
-               
-                //foreach (string xo in XandO)
-                //{
-                //    if (xo == "x")
-                //    {
-                //        label1.Text = "x";
-                //        e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
-                //        e.Graphics.DrawLine(cBrush, sq.x + sq.size - 5, sq.y + 5, sq.x + 5, sq.y + sq.size - 5);
-                //    }
-                //    else if (xo == "o")
-                //    {
-                //        label1.Text = "o";
-                //        e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.size - 10, sq.size - 10);
-                //    }
-                //}
-                //e.Graphics.DrawRectangle(cBrush, )
+                //e.Graphics.FillPolygon(squareBrush, sq.sqPoint);
+            }
+            for (int i = 0; i < sqList.Count; i++)
+            {
+                if (i != current) { e.Graphics.DrawRectangle(cBrush, sqList[current].x, sqList[current].y, sqList[current].size, sqList[current].size); }
             }
             foreach (Squares sq in sqList)
             {
@@ -151,7 +151,7 @@ namespace TicTacToe
                 }
                 else if (sq.contents == "O")
                 {
-                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
+                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.size - 10, sq.size - 10);
                 }
             }
         }
@@ -161,6 +161,23 @@ namespace TicTacToe
         /// </summary>
         public void Square()
         {
+            //Point[] sqPoints = new Point[9];
+            //sqPoints[0] = new Point(33, 33);
+            //sqPoints[1] = new Point((this.Width / 2) - 60, 33);
+
+            ////Point[] square = new Point[4];
+            ////square[0] = new Point(33, 33);
+            ////square[1] = new Point(153, 33);
+            ////square[2] = new Point(153, 153);
+            ////square[3] = new Point(33, 153);
+
+            //PointF[] square = new PointF[4];
+            //square[0] = new Point((this.Width / 2) - 60, 33);
+            //square[1] = new Point((this.Width / 2) + 60, 33);
+            //square[2] = new Point((this.Width / 2) + 60, 153);
+            //square[3] = new Point((this.Width / 2) - 60, 153);
+            //sqList.Add(new Squares(square, "empty"));
+
             //Top Row
             sqList.Add(new Squares(33, 33, 120, "empty"));
             sqList.Add(new Squares((this.Width / 3) + 22, 33, 120, "empty"));
@@ -174,7 +191,8 @@ namespace TicTacToe
             sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120, "empty"));
             sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120, "empty"));
 
-            //Point point1 = new Point(33, this.Height / 3) * 2 + 14);
+            
+            
         }
     }
 }
