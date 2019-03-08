@@ -9,18 +9,14 @@ namespace TicTacToe
 {
     class Squares
     {
-        public int x, y, size;
+        public int x, y;
         public string contents;
-        public PointF[] sqPoint, square;
+        public PointF[] square = new PointF[4];
 
-        public Squares(int _x, int _y, int _size, string _contents)
+        public Squares(PointF[] _square, string _contents)
         {
-            x = _x;
-            y = _y;
-            size = _size;
-            //sqPoint = _sqPoint;
-            //square = _square;
+            square = _square;
             contents = _contents;
-        }
+        }        
     }
 }

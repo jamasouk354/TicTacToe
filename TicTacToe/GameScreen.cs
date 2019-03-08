@@ -16,19 +16,18 @@ namespace TicTacToe
         SolidBrush squareBrush = new SolidBrush(Color.DarkKhaki);
         Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown, bDown;
         int current = 0;
-
-
+        
         List<Squares> sqList = new List<Squares>();
         List<string> XandO = new List<string>();
+        PointF[] squares = new PointF[4];
 
+        //List<PointF[]> squares = new List<PointF[]>();
 
         public GameScreen()
         {
             InitializeComponent();
             Square();
-        }
-
-        
+        }       
 
         #region Game Controls
         private void label1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -96,6 +95,7 @@ namespace TicTacToe
             }           
         }
         #endregion
+
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             if (upArrowDown == true)
@@ -113,12 +113,12 @@ namespace TicTacToe
 
             if (spaceDown == true)
             {
-                sqList[4].contents = "X";
+                sqList[current].contents = "X";
                 spaceDown = false;
             }
             if (bDown == true)
             {
-                sqList[4].contents = "O";
+                sqList[current].contents = "O";
                 bDown = false;
             }
             Refresh();
@@ -135,23 +135,25 @@ namespace TicTacToe
             //XandO Squares
             foreach (Squares sq in sqList)
             {
-                e.Graphics.FillRectangle(squareBrush, sq.x, sq.y, sq.size, sq.size);
-                //e.Graphics.FillPolygon(squareBrush, sq.sqPoint);
+                e.Graphics.FillPolygon(squareBrush, squares);
             }
             for (int i = 0; i < sqList.Count; i++)
             {
-                if (i != current) { e.Graphics.DrawRectangle(cBrush, sqList[current].x, sqList[current].y, sqList[current].size, sqList[current].size); }
+                if (i != current)
+                {
+                    e.Graphics.DrawRectangle(cBrush, sqList[current].x, sqList[current].y, 120, 120);                    
+                }                
             }
             foreach (Squares sq in sqList)
             {
-                if (sq.contents == "X")
+                if (sqList[current].contents == "X")
                 {
-                    e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + sq.size - 5, sq.y + sq.size - 5);
-                    e.Graphics.DrawLine(cBrush, sq.x + sq.size - 5, sq.y + 5, sq.x + 5, sq.y + sq.size - 5);
+                    e.Graphics.DrawLine(cBrush, sqList[current].x + 5, sqList[current].y + 5, sqList[current].x + 115, sqList[current].y + 115);
+                    e.Graphics.DrawLine(cBrush, sqList[current].x + 115, sqList[current].y + 5, sqList[current].x + 5, sqList[current].y + 115);
                 }
-                else if (sq.contents == "O")
+                else if (sqList[current].contents == "O")
                 {
-                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, sq.size - 10, sq.size - 10);
+                    e.Graphics.DrawEllipse(cBrush, sqList[current].x + 5, sqList[current].y + 5, 110, 110);
                 }
             }
         }
@@ -161,38 +163,31 @@ namespace TicTacToe
         /// </summary>
         public void Square()
         {
-            //Point[] sqPoints = new Point[9];
-            //sqPoints[0] = new Point(33, 33);
-            //sqPoints[1] = new Point((this.Width / 2) - 60, 33);
+            //squares[0] = new PointF(33, 33);
+            //squares[1] = new PointF(153, 33);
+            //squares[2] = new PointF(153, 153);
+            //squares[3] = new PointF(33, 153);
 
-            ////Point[] square = new Point[4];
-            ////square[0] = new Point(33, 33);
-            ////square[1] = new Point(153, 33);
-            ////square[2] = new Point(153, 153);
-            ////square[3] = new Point(33, 153);
-
-            //PointF[] square = new PointF[4];
-            //square[0] = new Point((this.Width / 2) - 60, 33);
-            //square[1] = new Point((this.Width / 2) + 60, 33);
-            //square[2] = new Point((this.Width / 2) + 60, 153);
-            //square[3] = new Point((this.Width / 2) - 60, 153);
-            //sqList.Add(new Squares(square, "empty"));
-
+            squares[0] = new PointF(33 + (156 * 2), 33 + (156 * 2));
+            squares[1] = new PointF(153 + (156 * 2), 33 + (156 * 2));
+            squares[2] = new PointF(153 + (156 * 2), 153 + (156 * 2));
+            squares[3] = new PointF(33 + (156 * 2), 153 + (156 * 2));
+            foreach (Squares sq in sqList)
+            {
+                
+            }
             //Top Row
-            sqList.Add(new Squares(33, 33, 120, "empty"));
-            sqList.Add(new Squares((this.Width / 3) + 22, 33, 120, "empty"));
-            sqList.Add(new Squares((this.Width / 3) * 2 + 14, 33, 120, "empty"));
-            //Mid Row
-            sqList.Add(new Squares(33, (this.Height / 2) - 60, 120, "empty"));
-            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 2) - 60, 120, "empty"));
-            sqList.Add(new Squares((this.Width / 3) * 2 + 14, (this.Height / 2) - 60, 120, "empty"));
-            //Bot Row
-            sqList.Add(new Squares(33, (this.Height / 3) * 2 + 14, 120, "empty"));
-            sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120, "empty"));
-            sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120, "empty"));
-
-            
-            
+            sqList.Add(new Squares(squares, "empty"));
+            sqList.Add(new Squares(squares, "empty"));
+            //sqList.Add(new Squares((this.Width / 3) * 2 + 14, 33, 120, "empty"));
+            ////Mid Row
+            //sqList.Add(new Squares(33, (this.Height / 2) - 60, 120, "empty"));
+            //sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 2) - 60, 120, "empty"));
+            //sqList.Add(new Squares((this.Width / 3) * 2 + 14, (this.Height / 2) - 60, 120, "empty"));
+            ////Bot Row
+            //sqList.Add(new Squares(33, (this.Height / 3) * 2 + 14, 120, "empty"));
+            //sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120, "empty"));
+            //sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120, "empty"));
         }
     }
 }
