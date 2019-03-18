@@ -20,7 +20,7 @@ namespace TicTacToe
         List<Squares> sqList = new List<Squares>();
         List<string> XandO = new List<string>();
         PointF[] squares = new PointF[4];
-
+        List<int> posList = new List<int>();
         //List<PointF[]> squares = new List<PointF[]>();
 
         public GameScreen()
@@ -108,8 +108,8 @@ namespace TicTacToe
                 current--;
                 downArrowDown = false;
             }
-            if (current == 10) { current = 0; }
-            if (current == -1) { current = 10; }
+            if (current >= 10) { current = 0; }
+            if (current <= -1) { current = 10; }
 
             if (spaceDown == true)
             {
@@ -121,10 +121,48 @@ namespace TicTacToe
                 sqList[current].contents = "O";
                 bDown = false;
             }
+            foreach (Squares sq in sqList)
+            {
+                //Horizontal Rows
+                if (sqList[0].contents == "X" && sqList[1].contents == "X" && sqList[2].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+                if (sqList[3].contents == "X" && sqList[4].contents == "X" && sqList[5].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+                if (sqList[6].contents == "X" && sqList[7].contents == "X" && sqList[8].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+                //Vertical Rows
+                if (sqList[0].contents == "X" && sqList[3].contents == "X" && sqList[6].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+                if (sqList[1].contents == "X" && sqList[4].contents == "X" && sqList[7].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+                if (sqList[2].contents == "X" && sqList[5].contents == "X" && sqList[8].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+                //Diagonal Rows
+                if (sqList[0].contents == "X" && sqList[4].contents == "X" && sqList[8].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+                if (sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
+                {
+                    outputLabel.Text = "X Player Wins!";
+                }
+            }
             Refresh();
         }
         private void PaintGame(object sender, PaintEventArgs e)
-        {             
+        {
             Pen cBrush = new Pen(Color.Black, 6);
             //Lines
             e.Graphics.DrawLine(line, (this.Width / 3) + 4, 40, (this.Width / 3) + 4, this.Height - 40);
@@ -135,25 +173,28 @@ namespace TicTacToe
             //XandO Squares
             foreach (Squares sq in sqList)
             {
+                squares[0] = new PointF(0 + sq.x, 0 + sq.y);
+                squares[1] = new PointF(120 + sq.x, 0 + sq.y);
+                squares[2] = new PointF(120 + sq.x, 120 + sq.y);
+                squares[3] = new PointF(0 + sq.x, 120 + sq.y);
+
                 e.Graphics.FillPolygon(squareBrush, squares);
+
+                if (sq.contents == "X")
+                {
+                    e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + 115, sq.y + 115);
+                    e.Graphics.DrawLine(cBrush, sq.x + 115, sq.y + 5, sq.x + 5, sq.y + 115);
+                }
+                else if (sq.contents == "O")
+                {
+                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, 110, 110);
+                }
             }
             for (int i = 0; i < sqList.Count; i++)
             {
                 if (i != current)
                 {
                     e.Graphics.DrawRectangle(cBrush, sqList[current].x, sqList[current].y, 120, 120);                    
-                }                
-            }
-            foreach (Squares sq in sqList)
-            {
-                if (sqList[current].contents == "X")
-                {
-                    e.Graphics.DrawLine(cBrush, sqList[current].x + 5, sqList[current].y + 5, sqList[current].x + 115, sqList[current].y + 115);
-                    e.Graphics.DrawLine(cBrush, sqList[current].x + 115, sqList[current].y + 5, sqList[current].x + 5, sqList[current].y + 115);
-                }
-                else if (sqList[current].contents == "O")
-                {
-                    e.Graphics.DrawEllipse(cBrush, sqList[current].x + 5, sqList[current].y + 5, 110, 110);
                 }
             }
         }
@@ -163,31 +204,18 @@ namespace TicTacToe
         /// </summary>
         public void Square()
         {
-            //squares[0] = new PointF(33, 33);
-            //squares[1] = new PointF(153, 33);
-            //squares[2] = new PointF(153, 153);
-            //squares[3] = new PointF(33, 153);
-
-            squares[0] = new PointF(33 + (156 * 2), 33 + (156 * 2));
-            squares[1] = new PointF(153 + (156 * 2), 33 + (156 * 2));
-            squares[2] = new PointF(153 + (156 * 2), 153 + (156 * 2));
-            squares[3] = new PointF(33 + (156 * 2), 153 + (156 * 2));
-            foreach (Squares sq in sqList)
-            {
-                
-            }
             //Top Row
-            sqList.Add(new Squares(squares, "empty"));
-            sqList.Add(new Squares(squares, "empty"));
-            //sqList.Add(new Squares((this.Width / 3) * 2 + 14, 33, 120, "empty"));
-            ////Mid Row
-            //sqList.Add(new Squares(33, (this.Height / 2) - 60, 120, "empty"));
-            //sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 2) - 60, 120, "empty"));
-            //sqList.Add(new Squares((this.Width / 3) * 2 + 14, (this.Height / 2) - 60, 120, "empty"));
-            ////Bot Row
-            //sqList.Add(new Squares(33, (this.Height / 3) * 2 + 14, 120, "empty"));
-            //sqList.Add(new Squares((this.Width / 2) - 60, (this.Height / 3) * 2 + 14, 120, "empty"));
-            //sqList.Add(new Squares((this.Height / 3) * 2 + 14, (this.Height / 3) * 2 + 14, 120, "empty"));
+            sqList.Add(new Squares(33, 33, squares, "empty"));
+            sqList.Add(new Squares(189, 33, squares, "empty"));
+            sqList.Add(new Squares(345, 33, squares, "empty"));
+            //Mid Row
+            sqList.Add(new Squares(33, 189, squares, "empty"));
+            sqList.Add(new Squares(189, 189, squares, "empty"));
+            sqList.Add(new Squares(345, 189, squares, "empty"));
+            //Bot Row
+            sqList.Add(new Squares(33, 345, squares, "empty"));
+            sqList.Add(new Squares(189, 345, squares, "empty"));
+            sqList.Add(new Squares(345, 345, squares, "empty"));
         }
     }
 }

@@ -13,8 +13,10 @@ namespace TicTacToe
         public string contents;
         public PointF[] square = new PointF[4];
 
-        public Squares(PointF[] _square, string _contents)
+        public Squares(int _x, int _y, PointF[] _square, string _contents)
         {
+            x = _x;
+            y = _y;
             square = _square;
             contents = _contents;
         }        
