@@ -123,6 +123,7 @@ namespace TicTacToe
             }
             foreach (Squares sq in sqList)
             {
+                //X
                 //Horizontal Rows
                 if (sqList[0].contents == "X" && sqList[1].contents == "X" && sqList[2].contents == "X")
                 {
@@ -157,6 +158,43 @@ namespace TicTacToe
                 if (sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
                 {
                     outputLabel.Text = "X Player Wins!";
+                }
+
+                //O
+                //Horizontal Rows
+                if (sqList[0].contents == "O" && sqList[1].contents == "O" && sqList[2].contents == "O")
+                {
+                    outputLabel.Text = "O Player Wins!";
+                }
+                if (sqList[3].contents == "O" && sqList[4].contents == "O" && sqList[5].contents == "O")
+                {
+                    outputLabel.Text = "O Player Wins!";
+                }
+                if (sqList[6].contents == "O" && sqList[7].contents == "O" && sqList[8].contents == "O")
+                {
+                    outputLabel.Text = "O Player Wins!";
+                }
+                //Vertical Rows
+                if (sqList[0].contents == "O" && sqList[3].contents == "O" && sqList[6].contents == "O")
+                {
+                    outputLabel.Text = "o Player Wins!";
+                }
+                if (sqList[1].contents == "O" && sqList[4].contents == "O" && sqList[7].contents == "O")
+                {
+                    outputLabel.Text = "O Player Wins!";
+                }
+                if (sqList[2].contents == "O" && sqList[5].contents == "O" && sqList[8].contents == "O")
+                {
+                    outputLabel.Text = "O Player Wins!";
+                }
+                //Diagonal Rows
+                if (sqList[0].contents == "O" && sqList[4].contents == "O" && sqList[8].contents == "O")
+                {
+                    outputLabel.Text = "O Player Wins!";
+                }
+                if (sqList[6].contents == "O" && sqList[4].contents == "O" && sqList[2].contents == "O")
+                {
+                    outputLabel.Text = "O Player Wins!";
                 }
             }
             Refresh();
