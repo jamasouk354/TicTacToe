@@ -18,10 +18,12 @@ namespace TicTacToe
         int current = 0;
         
         List<Squares> sqList = new List<Squares>();
-        List<string> XandO = new List<string>();
         PointF[] squares = new PointF[4];
-        List<int> posList = new List<int>();
-        //List<PointF[]> squares = new List<PointF[]>();
+
+        public class Player
+        {
+            public int x, y, size;
+        }
 
         public GameScreen()
         {
@@ -108,8 +110,8 @@ namespace TicTacToe
                 current--;
                 downArrowDown = false;
             }
-            if (current >= 10) { current = 0; }
-            if (current <= -1) { current = 10; }
+            if (current >= 9) { current = 0; }
+            if (current <= -1) { current = 9; }
 
             if (spaceDown == true)
             {
@@ -121,84 +123,45 @@ namespace TicTacToe
                 sqList[current].contents = "O";
                 bDown = false;
             }
+
+            //Check if the player has won
             foreach (Squares sq in sqList)
             {
                 //X
                 //Horizontal Rows
-                if (sqList[0].contents == "X" && sqList[1].contents == "X" && sqList[2].contents == "X")
-                {
-                    outputLabel.Text = "X Player Wins!";
-                }
-                if (sqList[3].contents == "X" && sqList[4].contents == "X" && sqList[5].contents == "X")
-                {
-                    outputLabel.Text = "X Player Wins!";
-                }
-                if (sqList[6].contents == "X" && sqList[7].contents == "X" && sqList[8].contents == "X")
-                {
-                    outputLabel.Text = "X Player Wins!";
-                }
-                //Vertical Rows
-                if (sqList[0].contents == "X" && sqList[3].contents == "X" && sqList[6].contents == "X")
-                {
-                    outputLabel.Text = "X Player Wins!";
-                }
-                if (sqList[1].contents == "X" && sqList[4].contents == "X" && sqList[7].contents == "X")
-                {
-                    outputLabel.Text = "X Player Wins!";
-                }
-                if (sqList[2].contents == "X" && sqList[5].contents == "X" && sqList[8].contents == "X")
-                {
-                    outputLabel.Text = "X Player Wins!";
-                }
-                //Diagonal Rows
-                if (sqList[0].contents == "X" && sqList[4].contents == "X" && sqList[8].contents == "X")
-                {
-                    outputLabel.Text = "X Player Wins!";
-                }
-                if (sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
+                if (sqList[0].contents == "X" && sqList[1].contents == "X" && sqList[2].contents == "X"
+                    || sqList[3].contents == "X" && sqList[4].contents == "X" && sqList[5].contents == "X"
+                    || sqList[6].contents == "X" && sqList[7].contents == "X" && sqList[8].contents == "X"
+                    //Vertical Rows
+                    || sqList[0].contents == "X" && sqList[3].contents == "X" && sqList[6].contents == "X"
+                    || sqList[1].contents == "X" && sqList[4].contents == "X" && sqList[7].contents == "X"
+                    || sqList[2].contents == "X" && sqList[5].contents == "X" && sqList[8].contents == "X"
+                    //Diagonal Rows
+                    || sqList[0].contents == "X" && sqList[4].contents == "X" && sqList[8].contents == "X"
+                    || sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
                 {
                     outputLabel.Text = "X Player Wins!";
                 }
 
                 //O
                 //Horizontal Rows
-                if (sqList[0].contents == "O" && sqList[1].contents == "O" && sqList[2].contents == "O")
-                {
-                    outputLabel.Text = "O Player Wins!";
-                }
-                if (sqList[3].contents == "O" && sqList[4].contents == "O" && sqList[5].contents == "O")
-                {
-                    outputLabel.Text = "O Player Wins!";
-                }
-                if (sqList[6].contents == "O" && sqList[7].contents == "O" && sqList[8].contents == "O")
-                {
-                    outputLabel.Text = "O Player Wins!";
-                }
-                //Vertical Rows
-                if (sqList[0].contents == "O" && sqList[3].contents == "O" && sqList[6].contents == "O")
-                {
-                    outputLabel.Text = "o Player Wins!";
-                }
-                if (sqList[1].contents == "O" && sqList[4].contents == "O" && sqList[7].contents == "O")
-                {
-                    outputLabel.Text = "O Player Wins!";
-                }
-                if (sqList[2].contents == "O" && sqList[5].contents == "O" && sqList[8].contents == "O")
-                {
-                    outputLabel.Text = "O Player Wins!";
-                }
-                //Diagonal Rows
-                if (sqList[0].contents == "O" && sqList[4].contents == "O" && sqList[8].contents == "O")
-                {
-                    outputLabel.Text = "O Player Wins!";
-                }
-                if (sqList[6].contents == "O" && sqList[4].contents == "O" && sqList[2].contents == "O")
+                if (sqList[0].contents == "O" && sqList[1].contents == "O" && sqList[2].contents == "O"
+                    || sqList[3].contents == "O" && sqList[4].contents == "O" && sqList[5].contents == "O"
+                    || sqList[6].contents == "O" && sqList[7].contents == "O" && sqList[8].contents == "O"
+                    //Vertical Rows
+                    || sqList[0].contents == "O" && sqList[3].contents == "O" && sqList[6].contents == "O"
+                    || sqList[1].contents == "O" && sqList[4].contents == "O" && sqList[7].contents == "O"
+                    || sqList[2].contents == "O" && sqList[5].contents == "O" && sqList[8].contents == "O"
+                    //Diagonal Rows
+                    || sqList[0].contents == "O" && sqList[4].contents == "O" && sqList[8].contents == "O"
+                    || sqList[6].contents == "O" && sqList[4].contents == "O" && sqList[2].contents == "O")
                 {
                     outputLabel.Text = "O Player Wins!";
                 }
             }
             Refresh();
         }
+
         private void PaintGame(object sender, PaintEventArgs e)
         {
             Pen cBrush = new Pen(Color.Black, 6);
@@ -228,11 +191,14 @@ namespace TicTacToe
                     e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, 110, 110);
                 }
             }
+
+            e.Graphics.DrawPolygon(cBrush, squares);
+
             for (int i = 0; i < sqList.Count; i++)
             {
                 if (i != current)
                 {
-                    e.Graphics.DrawRectangle(cBrush, sqList[current].x, sqList[current].y, 120, 120);                    
+                    e.Graphics.DrawRectangle(cBrush, sqList[current].x, sqList[current].y, 120, 120);
                 }
             }
         }
@@ -242,6 +208,10 @@ namespace TicTacToe
         /// </summary>
         public void Square()
         {
+            Player player = new Player();
+            player.x = 33;
+            player.y = 33;
+            player.size = 120;
             //Top Row
             sqList.Add(new Squares(33, 33, squares, "empty"));
             sqList.Add(new Squares(189, 33, squares, "empty"));
