@@ -15,21 +15,19 @@ namespace TicTacToe
         Pen line = new Pen(Color.Black, 8);
         SolidBrush squareBrush = new SolidBrush(Color.DarkKhaki);
         Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, spaceDown, bDown;
-        int current = 0;
-        
+        public static Random randGen = new Random();
+        int playerTurn = randGen.Next(1, 3);
+
         List<Squares> sqList = new List<Squares>();
         PointF[] squares = new PointF[4];
 
-        public class Player
-        {
-            public int x, y, size;
-        }
+        Player player = new Player(33, 33, 120);
 
         public GameScreen()
         {
             InitializeComponent();
             Square();
-        }       
+        }
 
         #region Game Controls
         private void label1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -100,76 +98,133 @@ namespace TicTacToe
 
         private void gameTimer_Tick(object sender, EventArgs e)
         {
-            if (upArrowDown == true)
-            {
-                current++;
-                upArrowDown = false;
-            }
-            if (downArrowDown == true)
-            {
-                current--;
-                downArrowDown = false;
-            }
-            if (current >= 9) { current = 0; }
-            if (current <= -1) { current = 9; }
-
-            if (spaceDown == true)
-            {
-                sqList[current].contents = "X";
-                spaceDown = false;
-            }
-            if (bDown == true)
-            {
-                sqList[current].contents = "O";
-                bDown = false;
-            }
-
+            //Boundaries();
+            
             //Check if the player has won
             foreach (Squares sq in sqList)
             {
-                //X
-                //Horizontal Rows
-                if (sqList[0].contents == "X" && sqList[1].contents == "X" && sqList[2].contents == "X"
-                    || sqList[3].contents == "X" && sqList[4].contents == "X" && sqList[5].contents == "X"
-                    || sqList[6].contents == "X" && sqList[7].contents == "X" && sqList[8].contents == "X"
-                    //Vertical Rows
-                    || sqList[0].contents == "X" && sqList[3].contents == "X" && sqList[6].contents == "X"
-                    || sqList[1].contents == "X" && sqList[4].contents == "X" && sqList[7].contents == "X"
-                    || sqList[2].contents == "X" && sqList[5].contents == "X" && sqList[8].contents == "X"
-                    //Diagonal Rows
-                    || sqList[0].contents == "X" && sqList[4].contents == "X" && sqList[8].contents == "X"
-                    || sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
+                if (playerTurn == 1)
                 {
-                    outputLabel.Text = "X Player Wins!";
+                    if (spaceDown == true)
+                    {
+                        sq.contents = "X";
+                        playerTurn = 2;
+                        spaceDown = false;
+                    }
+                    if (player.x == sq.x && player.y == sq.y)
+                    {
+                        //X
+                        //Horizontal Rows
+                        if (sqList[0].contents == "X" && sqList[1].contents == "X" && sqList[2].contents == "X"
+                            || sqList[3].contents == "X" && sqList[4].contents == "X" && sqList[5].contents == "X"
+                            || sqList[6].contents == "X" && sqList[7].contents == "X" && sqList[8].contents == "X"
+                        //Vertical Rows
+                            || sqList[0].contents == "X" && sqList[3].contents == "X" && sqList[6].contents == "X"
+                            || sqList[1].contents == "X" && sqList[4].contents == "X" && sqList[7].contents == "X"
+                            || sqList[2].contents == "X" && sqList[5].contents == "X" && sqList[8].contents == "X"
+                        //Diagonal Rows
+                            || sqList[0].contents == "X" && sqList[4].contents == "X" && sqList[8].contents == "X"
+                            || sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
+                        {
+                            outputLabel.Text = "X Player Wins!";
+                        }
+                    }
                 }
+                else if (playerTurn == 2)
+                {
+                    if (bDown == true)
+                    {
+                        sq.contents = "O";
+                        playerTurn = 1;
+                        bDown = false;
+                    }
+                    if (player.x == sq.x && player.y == sq.y)
+                    {
+                        //O
+                        //Horizontal Rows
+                        if (sqList[0].contents == "O" && sqList[1].contents == "O" && sqList[2].contents == "O"
+                            || sqList[3].contents == "O" && sqList[4].contents == "O" && sqList[5].contents == "O"
+                            || sqList[6].contents == "O" && sqList[7].contents == "O" && sqList[8].contents == "O"
+                        //Vertical Rows
+                            || sqList[0].contents == "O" && sqList[3].contents == "O" && sqList[6].contents == "O"
+                            || sqList[1].contents == "O" && sqList[4].contents == "O" && sqList[7].contents == "O"
+                            || sqList[2].contents == "O" && sqList[5].contents == "O" && sqList[8].contents == "O"
+                        //Diagonal Rows
+                            || sqList[0].contents == "O" && sqList[4].contents == "O" && sqList[8].contents == "O"
+                            || sqList[6].contents == "O" && sqList[4].contents == "O" && sqList[2].contents == "O")
+                        {
+                            outputLabel.Text = "O Player Wins!";
+                        }
+                    }
+                }
+                //if (playerTurn == 1)
+                //{
+                //    if (spaceDown == true)
+                //    {
+                //        sq.contents = "X";
+                //        playerTurn = 2;
+                //        spaceDown = false;
+                //    }
+                //}
+                //else if (playerTurn == 2)
+                //{
+                //    if (bDown == true)
+                //    {
+                //        sq.contents = "O";
+                //        playerTurn = 1;
+                //        bDown = false;
+                //    }
+                //}
+                //if (player.x == sq.x && player.y == sq.y)
+                //{                    
+                //    //X
+                //    //Horizontal Rows
+                //    if (sqList[0].contents == "X" && sqList[1].contents == "X" && sqList[2].contents == "X"
+                //        || sqList[3].contents == "X" && sqList[4].contents == "X" && sqList[5].contents == "X"
+                //        || sqList[6].contents == "X" && sqList[7].contents == "X" && sqList[8].contents == "X"
+                //    //Vertical Rows
+                //        || sqList[0].contents == "X" && sqList[3].contents == "X" && sqList[6].contents == "X"
+                //        || sqList[1].contents == "X" && sqList[4].contents == "X" && sqList[7].contents == "X"
+                //        || sqList[2].contents == "X" && sqList[5].contents == "X" && sqList[8].contents == "X"
+                //    //Diagonal Rows
+                //        || sqList[0].contents == "X" && sqList[4].contents == "X" && sqList[8].contents == "X"
+                //        || sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
+                //    {
+                //        outputLabel.Text = "X Player Wins!";
+                //    }
 
-                //O
-                //Horizontal Rows
-                if (sqList[0].contents == "O" && sqList[1].contents == "O" && sqList[2].contents == "O"
-                    || sqList[3].contents == "O" && sqList[4].contents == "O" && sqList[5].contents == "O"
-                    || sqList[6].contents == "O" && sqList[7].contents == "O" && sqList[8].contents == "O"
-                    //Vertical Rows
-                    || sqList[0].contents == "O" && sqList[3].contents == "O" && sqList[6].contents == "O"
-                    || sqList[1].contents == "O" && sqList[4].contents == "O" && sqList[7].contents == "O"
-                    || sqList[2].contents == "O" && sqList[5].contents == "O" && sqList[8].contents == "O"
-                    //Diagonal Rows
-                    || sqList[0].contents == "O" && sqList[4].contents == "O" && sqList[8].contents == "O"
-                    || sqList[6].contents == "O" && sqList[4].contents == "O" && sqList[2].contents == "O")
-                {
-                    outputLabel.Text = "O Player Wins!";
-                }
+                //    //O
+                //    //Horizontal Rows
+                //    if (sqList[0].contents == "O" && sqList[1].contents == "O" && sqList[2].contents == "O"
+                //        || sqList[3].contents == "O" && sqList[4].contents == "O" && sqList[5].contents == "O"
+                //        || sqList[6].contents == "O" && sqList[7].contents == "O" && sqList[8].contents == "O"
+                //    //Vertical Rows
+                //        || sqList[0].contents == "O" && sqList[3].contents == "O" && sqList[6].contents == "O"
+                //        || sqList[1].contents == "O" && sqList[4].contents == "O" && sqList[7].contents == "O"
+                //        || sqList[2].contents == "O" && sqList[5].contents == "O" && sqList[8].contents == "O"
+                //    //Diagonal Rows
+                //        || sqList[0].contents == "O" && sqList[4].contents == "O" && sqList[8].contents == "O"
+                //        || sqList[6].contents == "O" && sqList[4].contents == "O" && sqList[2].contents == "O")
+                //    {
+                //        outputLabel.Text = "O Player Wins!";
+                //    }
+                //}                    
             }
             Refresh();
         }
 
         private void PaintGame(object sender, PaintEventArgs e)
         {
-            Pen cBrush = new Pen(Color.Black, 6);
+            Pen cPen = new Pen(Color.Black, 6);
+            Font drawFont = new Font("Arial", 16, FontStyle.Bold);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
             //Lines
             e.Graphics.DrawLine(line, (this.Width / 3) + 4, 40, (this.Width / 3) + 4, this.Height - 40);
             e.Graphics.DrawLine(line, (this.Width / 3) * 2 - 4, 40, (this.Width / 3) * 2 - 4, this.Height - 40); 
             e.Graphics.DrawLine(line, 40, (this.Height / 3) + 4, this.Width - 40, (this.Height / 3) + 4);
             e.Graphics.DrawLine(line, 40, (this.Height / 3) * 2 - 4, this.Width - 40, (this.Height / 3) * 2 - 4);
+
+            e.Graphics.DrawString("Player1" + " turn", drawFont, drawBrush, this.Width/2 - 40, 5);
 
             //XandO Squares
             foreach (Squares sq in sqList)
@@ -180,25 +235,16 @@ namespace TicTacToe
                 squares[3] = new PointF(0 + sq.x, 120 + sq.y);
 
                 e.Graphics.FillPolygon(squareBrush, squares);
+                e.Graphics.DrawRectangle(cPen, player.x, player.y, player.size, player.size);
 
                 if (sq.contents == "X")
                 {
-                    e.Graphics.DrawLine(cBrush, sq.x + 5, sq.y + 5, sq.x + 115, sq.y + 115);
-                    e.Graphics.DrawLine(cBrush, sq.x + 115, sq.y + 5, sq.x + 5, sq.y + 115);
+                    e.Graphics.DrawLine(cPen, sq.x + 5, sq.y + 5, sq.x + 115, sq.y + 115);
+                    e.Graphics.DrawLine(cPen, sq.x + 115, sq.y + 5, sq.x + 5, sq.y + 115);
                 }
                 else if (sq.contents == "O")
                 {
-                    e.Graphics.DrawEllipse(cBrush, sq.x + 5, sq.y + 5, 110, 110);
-                }
-            }
-
-            e.Graphics.DrawPolygon(cBrush, squares);
-
-            for (int i = 0; i < sqList.Count; i++)
-            {
-                if (i != current)
-                {
-                    e.Graphics.DrawRectangle(cBrush, sqList[current].x, sqList[current].y, 120, 120);
+                    e.Graphics.DrawEllipse(cPen, sq.x + 5, sq.y + 5, 110, 110);
                 }
             }
         }
@@ -208,10 +254,8 @@ namespace TicTacToe
         /// </summary>
         public void Square()
         {
-            Player player = new Player();
-            player.x = 33;
-            player.y = 33;
-            player.size = 120;
+            
+
             //Top Row
             sqList.Add(new Squares(33, 33, squares, "empty"));
             sqList.Add(new Squares(189, 33, squares, "empty"));
@@ -224,6 +268,41 @@ namespace TicTacToe
             sqList.Add(new Squares(33, 345, squares, "empty"));
             sqList.Add(new Squares(189, 345, squares, "empty"));
             sqList.Add(new Squares(345, 345, squares, "empty"));
+        }
+
+        public void Boundaries()
+        {
+            if (player.x < this.Width && player.x > 0)
+            {
+                if (leftArrowDown == true)
+                {
+                    player.x -= 156;
+                    leftArrowDown = false;
+                }
+                if (rightArrowDown == true)
+                {
+                    player.x += 156;
+                    rightArrowDown = false;
+                }
+            }
+            else if (player.x > this.Width) { player.x -= 156; }
+            else if (player.x < 0) { player.x += 156; }
+
+            if (player.y < this.Height && player.y > 0)
+            {
+                if (upArrowDown == true)
+                {
+                    player.y -= 156;
+                    upArrowDown = false;
+                }
+                if (downArrowDown == true)
+                {
+                    player.y += 156;
+                    downArrowDown = false;
+                }
+            }
+            else if (player.y > this.Height) { player.y -= 156; }
+            else if (player.y < 0) { player.y += 156; }
         }
     }
 }
