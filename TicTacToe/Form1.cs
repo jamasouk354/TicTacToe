@@ -16,11 +16,15 @@ namespace TicTacToe
         {
             InitializeComponent();
 
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
             MainScreen ms = new MainScreen();
             this.Controls.Add(ms);
 
-            Form f = this.FindForm();
-            f.Controls.Remove(this);
-        }           
+            ms.Location = new Point((this.Width - ms.Width) / 2, (this.Height - ms.Height) / 2);
+        }
     }
 }

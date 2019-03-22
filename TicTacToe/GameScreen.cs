@@ -15,7 +15,7 @@ namespace TicTacToe
     {
         Pen line = new Pen(Color.Black, 8);
         SolidBrush squareBrush = new SolidBrush(Color.DarkKhaki);
-        Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, bDown, spaceDown;
+        Boolean leftArrowDown, downArrowDown, rightArrowDown, upArrowDown, bDown, spaceDown, nDown, mDown, escDown;
         public static Random randGen = new Random();
         int playerTurn = randGen.Next(1, 3);
         int win = 0;
@@ -58,6 +58,15 @@ namespace TicTacToe
                     case Keys.Space:
                         spaceDown = true;
                         break;
+                    case Keys.M:
+                        mDown = true;
+                        break;
+                    case Keys.N:
+                        nDown = true;
+                        break;
+                    case Keys.Escape:
+                        escDown = true;
+                        break;
                 }
             }
         }
@@ -87,6 +96,15 @@ namespace TicTacToe
                     case Keys.Space:
                         spaceDown = false;
                         break;
+                    case Keys.M:
+                        mDown = false;
+                        break;
+                    case Keys.N:
+                        nDown = false;
+                        break;
+                    case Keys.Escape:
+                        escDown = false;
+                        break;
                 }
             }
         }
@@ -96,7 +114,30 @@ namespace TicTacToe
         {
             PlayerMove();
 
-            //Check if the player 1/2 has won
+            #region Player 1/2 Controls
+            if (escDown == true)
+            {
+                Application.Exit();
+            }
+            //Back to Main Menu
+            if (mDown == true)
+            {
+                Form f = this.FindForm();
+                f.Controls.Remove(this);
+                MainScreen ms = new MainScreen();
+                f.Controls.Add(ms);
+                mDown = false;
+            }
+            //Restart Game
+            if (nDown == true)
+            {
+                Form f = this.FindForm();
+                f.Controls.Remove(this);
+                GameScreen gs = new GameScreen();
+                f.Controls.Add(gs);
+            }
+
+            //Check if the player 1 or 2 has won
             foreach (Squares sq in sqList)
             {
                 if (player.x == sq.x && player.y == sq.y)
@@ -124,7 +165,6 @@ namespace TicTacToe
                                 || sqList[0].contents == "X" && sqList[4].contents == "X" && sqList[8].contents == "X"
                                 || sqList[6].contents == "X" && sqList[4].contents == "X" && sqList[2].contents == "X")
                             {
-                                outputLabel.Text = "X Player Wins!";
                                 win = 1;
                                 gameTimer.Stop();
                             }
@@ -150,20 +190,22 @@ namespace TicTacToe
                                 || sqList[0].contents == "O" && sqList[4].contents == "O" && sqList[8].contents == "O"
                                 || sqList[6].contents == "O" && sqList[4].contents == "O" && sqList[2].contents == "O")
                             {
-                                outputLabel.Text = "O Player Wins!";
                                 win = 2;
                                 gameTimer.Stop();
                             }
                         }
                     }
-                    else if (sqList[0].contents != "empty" && sqList[1].contents != "empty" && sqList[2].contents != "empty" &&
-                                sqList[3].contents != "empty" && sqList[4].contents != "empty" && sqList[5].contents != "empty" &&
-                                sqList[6].contents != "empty" && sqList[7].contents != "empty" && sqList[8].contents != "empty")
+                    if (sqList[0].contents != "empty" && sqList[1].contents != "empty" && sqList[2].contents != "empty" &&
+                           sqList[3].contents != "empty" && sqList[4].contents != "empty" && sqList[5].contents != "empty" &&
+                           sqList[6].contents != "empty" && sqList[7].contents != "empty" && sqList[8].contents != "empty")
                     {
                         win = 3;
                     }
                 }
             }
+            #endregion
+
+            
             Refresh();
         }
 
@@ -172,6 +214,7 @@ namespace TicTacToe
             Pen cPen = new Pen(Color.Black, 6);
             Font drawFont = new Font("Arial", 30, FontStyle.Bold);
             Font dFont = new Font("Arial", 24, FontStyle.Bold);
+            Font pFont = new Font("Arial", 18, FontStyle.Bold);
             SolidBrush drawBrush = new SolidBrush(Color.Black);
             //Lines
             e.Graphics.DrawLine(line, (this.Width / 3) + 4, 40, (this.Width / 3) + 4, this.Height - 40);
@@ -201,32 +244,40 @@ namespace TicTacToe
                 }
             }
 
+            if (playerTurn == 1) { e.Graphics.DrawString("Player 1 turn", pFont, drawBrush, (this.Width / 2) - 78, 0); }
+            else if (playerTurn == 2) { e.Graphics.DrawString("Player 2 turn", pFont, drawBrush, (this.Width / 2) - 78, 0); }
+
+            #region Wins
+            //Player 1 Wins
             if (win == 1)
             {
                 e.Graphics.Clear(Color.Khaki);
                 e.Graphics.DrawString("Player 1 wins!", drawFont, drawBrush, (this.Width / 2) - 140, 50);
-                e.Graphics.DrawString("Press 'M' to go back to Menu", dFont, drawBrush, (this.Width / 2) - 20, 110);
-                e.Graphics.DrawString("Press 'C' to Exit the Game", dFont, drawBrush, (this.Width / 2) - 195, 150);
+                e.Graphics.DrawString("Press 'M' to go back to Menu", dFont, drawBrush, (this.Width / 2) - 225, 190);
+                e.Graphics.DrawString("Press 'N' to Restart Game", dFont, drawBrush, (this.Width / 2) - 200, 270);
+                e.Graphics.DrawString("Press 'Esc' to Exit the Game", dFont, drawBrush, (this.Width / 2) - 220, 350);
             }
+            //Player 2 Wins
             if (win == 2)
             {
                 e.Graphics.Clear(Color.Khaki);
                 e.Graphics.DrawString("Player 2 wins!", drawFont, drawBrush, (this.Width / 2) - 140, 50);
-                e.Graphics.DrawString("Press 'M' to go back to Menu", dFont, drawBrush, (this.Width / 2) - 220, 110);
-                e.Graphics.DrawString("Press 'C' to Exit the Game", dFont, drawBrush, (this.Width / 2) - 195, 150);
+                e.Graphics.DrawString("Press 'M' to go back to Menu", dFont, drawBrush, (this.Width / 2) - 225, 190);
+                e.Graphics.DrawString("Press 'N' to Restart Game", dFont, drawBrush, (this.Width / 2) - 200, 270);
+                e.Graphics.DrawString("Press 'Esc' to Exit the Game", dFont, drawBrush, (this.Width / 2) - 220, 350);
             }
+            //Tie
             if (win == 3)
             {
                 e.Graphics.Clear(Color.Khaki);
                 e.Graphics.DrawString("Tie", drawFont, drawBrush, (this.Width / 2) - 30, 50);
-                e.Graphics.DrawString("Press 'M' to go back to Menu", dFont, drawBrush, (this.Width / 2) - 220, 110);
-                e.Graphics.DrawString("Press 'C' to Exit the Game", dFont, drawBrush, (this.Width / 2) - 195, 150);
+                e.Graphics.DrawString("Press 'M' to go back to Menu", dFont, drawBrush, (this.Width / 2) - 225, 190);
+                e.Graphics.DrawString("Press 'N' to Restart Game", dFont, drawBrush, (this.Width / 2) - 200, 270);
+                e.Graphics.DrawString("Press 'Esc' to Exit the Game", dFont, drawBrush, (this.Width / 2) - 220, 350);
             }
+            #endregion
         }
 
-        /// <summary>
-        /// Create Squares
-        /// </summary>
         public void Square()
         {
             //Top Row
